@@ -1,0 +1,16 @@
+{
+    "name": "postgres-connector-for-hadoop",  
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
+        "database.hostname": "192.168.1.18", 
+        "database.port": "30208", 
+        "database.user": "postgres", 
+        "database.password": "postgres", 
+        "database.dbname" : "postgres", 
+        "database.server.name": "postgres",
+        "plugin.name": "pgoutput",
+        "topic.prefix": "topic_hadoop", 
+        "table.include.list": "public.demo",
+        "slot.name": "slot_demo_hadoop"
+    }
+}

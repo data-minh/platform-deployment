@@ -1,0 +1,22 @@
+{
+    "name": "iceberg-sink-hadoop",
+    "config": {
+      "connector.class": "com.getindata.kafka.connect.iceberg.sink.IcebergSink",
+      "topics": "topic_hadoop.public.demo",
+      "upsert": "False",
+      "upsert.keep-deletes": "True",
+      "table.auto-create": "True",
+      "table.write-format": "parquet",
+      "table.namespace": "my_demo",
+      "table.prefix": "cdc_",
+      "iceberg.warehouse": "s3a://nm-data/hadoop",
+      "iceberg.fs.defaultFS": "s3a://nm-data/hadoop", 
+      "iceberg.catalog-name": "mycatalog", 
+      "iceberg.catalog-impl": "org.apache.iceberg.hadoop.HadoopCatalog", 
+      "iceberg.fs.s3a.path.style.access": "True",
+      "iceberg.fs.s3a.endpoint": "http://192.168.1.18:31024",
+      "iceberg.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+      "iceberg.fs.s3a.access.key": "rafflesit",
+      "iceberg.fs.s3a.secret.key": "rafflesit"
+    }
+  }
