@@ -1,14 +1,14 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nm-broker-pv
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 5Gi
-  # storageClassName: standard
-  storageClassName: worker02-nfs-storageclass
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nm-broker-pv
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   capacity:
+#     storage: 5Gi
+#   # storageClassName: standard
+#   storageClassName: worker02-nfs-storageclass
 
 ---
 
@@ -112,3 +112,4 @@ spec:
       targetPort: 9101
   selector:
     app: broker
+  type: NodePort

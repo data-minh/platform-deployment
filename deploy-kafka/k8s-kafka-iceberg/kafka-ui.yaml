@@ -28,9 +28,13 @@ spec:
         - name: KAFKA_CLUSTERS_0_METRICS_PORT
           value: "9101"
         - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME
-          value: first
+          value: "connect-debezium"
         - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS
-          value: "http://connect-debezium:8083"
+          value: "http://connect-debezium:8084"
+        - name: KAFKA_CLUSTERS_0_KAFKACONNECT_1_NAME
+          value: "connect-confluentinc"
+        - name: KAFKA_CLUSTERS_0_KAFKACONNECT_1_ADDRESS
+          value: "http://connect-confluentinc:8085"
         - name: KAFKA_CLUSTERS_0_SCHEMAREGISTRY
           value: "http://schema-registry:8081"
 ---

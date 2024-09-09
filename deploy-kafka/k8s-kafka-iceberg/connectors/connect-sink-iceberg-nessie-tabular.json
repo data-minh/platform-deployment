@@ -1,17 +1,21 @@
   {
-      "name": "iceberg-sink-demo",
+      "name": "iceberg-sink-nessie-demo",
       "config": {
         "connector.class": "io.tabular.iceberg.connect.IcebergSinkConnector",
-        "topics": "cdc.public.demo",
+        "tasks.max": "2",
+        "topics": "topic_demo",
         "iceberg.tables.dynamic-enabled": "true",
-        "iceberg.tables.route-field":"my_demo",
+        "iceberg.tables.route-field":"table",
         "iceberg.tables.auto-create-enabled":"true",
+
+        "table.namespace": "my_demo",
+        "iceberg.catalog": "mycatalog",
 
         "iceberg.catalog.catalog-impl": "org.apache.iceberg.nessie.NessieCatalog",
         "iceberg.catalog.uri": "http://192.168.1.19:32028/api/v1",
         "iceberg.catalog.ref": "main",
         "iceberg.catalog.authentication.type": "NONE",
-        "iceberg.catalog.warehouse": "s3a://nm-data/warehouse",
+        "iceberg.catalog.warehouse": "s3a://nm-data/nessie",
         "iceberg.catalog.s3.endpoint": "http://192.168.1.18:31024",
         "iceberg.catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
         "iceberg.catalog.client.region": "us-east-1",
@@ -22,6 +26,6 @@
         "value.converter": "org.apache.kafka.connect.json.JsonConverter",
         "key.converter": "org.apache.kafka.connect.storage.StringConverter",
 
-        "iceberg.control.commitIntervalMs": "2000"
+        "iceberg.control.commitIntervalMs": "60000"
       }
     }

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-rest-proxy
+  namespace: nm-kafka-cdc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-rest-proxy
+  template:
+    metadata:
+      labels:
+        app: kafka-rest-proxy
+    spec:
+      containers:
+      - name: kafka-rest-proxy
+        image: confluentinc/cp-kafka-rest:latest
+        ports:
+        - containerPort: 8082
+        env:
+        - name: KAFKA_REST_HOST_NAME
+          value: "kafka-rest-proxy"
+        - name: KAFKA_REST_BOOTSTRAP_SERVERS
+          value: "PLAINTEXT://broker:29092"
+        - name: KAFKA_REST_LISTENERS
+          value: "http://0.0.0.0:8082"
+        - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+          value: "http://schema-registry:8081"
+        - name: KAFKA_LOG4J_LOGGERS
+          value: "org.apache.kafka.connect.runtime=DEBUG,io.tabular.iceberg.connect=DEBUG"
+        - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+          value: "DEBUG"
+        - name: CONNECT_LOG4J_ROOT_LOGLEVEL
+          value: "DEBUG"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-rest-proxy
+  namespace: nm-kafka-cdc
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+  selector:
+    app: kafka-rest-proxy
+  type: NodePort

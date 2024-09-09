@@ -1,0 +1,27 @@
+{
+    "name": "postgres-connector-for-nessie",
+    "config": {
+      "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+      "tasks.max": "1",
+      "database.hostname": "192.168.1.18",
+      "database.port": "30208",
+      "database.user": "postgres",
+      "database.password": "postgres",
+      "database.dbname": "postgres",
+      "database.server.name": "postgres",
+      "topic.prefix": "topic_nessie",
+      "table.include.list": "public.demo",
+      "plugin.name": "pgoutput",
+      "transforms": "unwrap",
+      "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+      "transforms.unwrap.add.fields": "op,table,source.ts_ms,db",
+      "transforms.unwrap.add.headers": "db",
+      "transforms.unwrap.delete.handling.mode": "rewrite",
+      "transforms.unwrap.drop.tombstones": "true",
+      "offset.flush.interval.ms": "0",
+      "max.batch.size": "4096",
+      "max.queue.size": "16384",
+      "slot.name": "slot_demo_nessie"
+    }
+  }
+  

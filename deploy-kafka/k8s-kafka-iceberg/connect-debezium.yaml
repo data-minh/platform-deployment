@@ -26,11 +26,11 @@ spec:
         - name: GROUP_ID
           value: "1"
         - name: CONFIG_STORAGE_TOPIC
-          value: "connect_configs"
+          value: "connect_configs_debezium"
         - name: STATUS_STORAGE_TOPIC
-          value: "connect_statuses"
+          value: "connect_statuses_debezium"
         - name: OFFSET_STORAGE_TOPIC
-          value: "connect_offsets"
+          value: "connect_offsets_debezium"
         - name: CONNECT_TOPIC_CREATION_ENABLE
           value: "true"
         # - name: KEY_CONVERTER
@@ -67,7 +67,7 @@ metadata:
   namespace: nm-kafka-cdc
 spec:
   ports:
-    - port: 8083
+    - port: 8084
       targetPort: 8083
   selector:
     app: connect-debezium

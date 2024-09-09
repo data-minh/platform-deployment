@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: connect-confluentinc
+  namespace: nm-kafka-cdc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connect-confluentinc
+  template:
+    metadata:
+      labels:
+        app: connect-confluentinc
+    spec:
+      containers:
+      - name: connect-confluentinc
+        image: minh333/kafka-connect-confluentinc:1.1.5
+        ports:
+        - containerPort: 8083
+        env:
+        - name: CONNECT_BOOTSTRAP_SERVERS
+          value: "broker:29092"
+        - name: CONNECT_REST_ADVERTISED_HOST_NAME
+          value: "connect-confluentinc"
+        - name: CONNECT_REST_PORT
+          value: "8083"
+        - name: CONNECT_GROUP_ID
+          value: "2"
+        - name: CONNECT_CONFIG_STORAGE_TOPIC
+          value: "connect_configs_confluentinc"
+        - name: CONNECT_OFFSET_STORAGE_TOPIC
+          value: "connect_offsets_confluentinc"
+        - name: CONNECT_STATUS_STORAGE_TOPIC
+          value: "connect_statuses_confluentinc"
+        - name: CONNECT_KEY_CONVERTER
+          value: "org.apache.kafka.connect.json.JsonConverter"
+        - name: CONNECT_VALUE_CONVERTER
+          value: "org.apache.kafka.connect.json.JsonConverter"
+        - name: CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE
+          value: "false"
+        - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+          value: "false"
+        - name: CONNECT_PLUGINS_DIR
+          value: "/usr/share/java"
+        volumeMounts:
+          - mountPath: /var/lib/kafka/data
+            name: connect-confluentinc-data
+  volumeClaimTemplates:
+    - metadata:
+        name: connect-confluentinc-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: worker02-nfs-storageclass
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connect-confluentinc
+  namespace: nm-kafka-cdc
+spec:
+  ports:
+    - port: 8085
+      targetPort: 8083
+  selector:
+    app: connect-confluentinc
+  type: NodePort
+
