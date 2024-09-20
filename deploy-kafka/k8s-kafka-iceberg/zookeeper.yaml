@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nm-zookeeper-pvc-data
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   resources:
     requests:
@@ -17,7 +17,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nm-zookeeper-pvc-log
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   resources:
     requests:
@@ -32,7 +32,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zookeeper
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   replicas: 1
   selector:
@@ -74,7 +74,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zookeeper
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   ports:
     - port: 2181

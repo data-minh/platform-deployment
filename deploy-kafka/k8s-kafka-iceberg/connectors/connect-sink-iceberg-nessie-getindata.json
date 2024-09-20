@@ -3,7 +3,11 @@
       "config": {
         "connector.class": "com.getindata.kafka.connect.iceberg.sink.IcebergSink",
         "tasks.max": "1",
-        "topics": "topic_nessie.public.demo",
+        "topics": "cdc.public.test",
+        "timezone": "UTC",
+        "schema.compatibility": "NONE",
+        "behavior.on.null.values": "ignore",
+        "auto.register.schemas": "true",
         "table.namespace": "my_demo",
         "table.prefix": "cdc_",
         "table.auto-create": "true",

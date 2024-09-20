@@ -48,16 +48,51 @@ services:
       - myNetwork
 
   connect:
-    image: minh333/kafka-connect:1.0.0
+    image: minh333/kafka-connect:1.1.2
     container_name: connect
     environment:
-      GROUP_ID: 1
-      CONFIG_STORAGE_TOPIC: my-connect-configs
-      OFFSET_STORAGE_TOPIC: my-connect-offsets
+      GROUP_ID: connect-debezium
       BOOTSTRAP_SERVERS: kafka:9092
-      CONNECT_TOPIC_CREATION_ENABLE: 'true'
+      CONFIG_STORAGE_TOPIC: connect-configs
+      STATUS_STORAGE_TOPIC: connect-status
+      OFFSET_STORAGE_TOPIC: connect-offsets
+      KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      KEY_CONVERTER_SCHEMAS_ENABLE: 'false'
+      VALUE_CONVERTER_SCHEMAS_ENABLE: 'false'
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      S3_ENDPOINT: http://minio:9000
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
     ports:
       - "8083:8083"
+    networks:
+      - myNetwork
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.2.0
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081,http://localhost:8081
+    ports:
+      - 8081:8081
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - myNetwork
+
+  nessie:
+    image: projectnessie/nessie:latest
+    container_name: nessie
+    ports:
+      - "19120:19120"
     networks:
       - myNetwork
 
@@ -75,6 +110,7 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://connect:8083
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
     networks:
       - myNetwork
 

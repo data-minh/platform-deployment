@@ -1,0 +1,21 @@
+{
+    "name": "debezium-connector-postgres",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "tasks.max": "1",
+        "database.hostname": "192.168.1.18",
+        "database.port": "30208",
+        "database.user": "postgres",
+        "database.password": "postgres",
+        "database.dbname": "postgres",
+        "database.server.name": "postgres",
+        "topic.prefix": "cdc",
+        "table.include.list": "public.test",
+        "plugin.name": "pgoutput",
+        "key.converter.schema.registry.url": "http://schema-registry:8081",
+        "value.converter.schema.registry.url": "http://schema-registry:8081",
+        "key.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "slot.name": "slot_test_nessie"
+    }
+}

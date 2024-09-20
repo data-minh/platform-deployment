@@ -1,0 +1,40 @@
+{
+    "name": "iceberg-sink-nessie-getindata",
+    "config": {
+      "connector.class": "com.getindata.kafka.connect.iceberg.sink.IcebergSink",
+      "tasks.max": "1",
+      "topics": "cdc.public.test",
+      "timezone": "UTC",
+      "schema.compatibility": "NONE",
+      "behavior.on.null.values": "ignore",
+      "auto.register.schemas": "true",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "table.namespace": "my_demo",
+      "table.prefix": "cdc_",
+      "table.auto-create": "true",
+      "table.write-format": "parquet",
+
+      "iceberg.catalog-impl": "org.apache.iceberg.nessie.NessieCatalog",
+      "iceberg.uri": "http://192.168.1.19:32028/api/v1",
+      "iceberg.ref": "main",
+
+      "iceberg.table-default.write.metadata.delete-after-commit.enabled": "true",
+      "iceberg.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
+      "iceberg.engine.hive.enabled": "true",
+      "iceberg.catalog-name": "mycatalog",
+      "iceberg.catalog.default.catalog-impl": "org.apache.iceberg.hive.HiveCatalog",
+      "iceberg.warehouse": "s3a://nm-data/nessie",
+      "iceberg.fs.defaultFS": "s3a://nm-data",
+      "iceberg.fs.s3.path-style-access": "true",
+      "iceberg.fs.s3.fast.upload": "true",
+      "iceberg.fs.s3.fast.upload.buffer": "bytebuffer",
+      "iceberg.fs.s3.endpoint": "http://192.168.1.18:31024",
+      "iceberg.fs.s3.access-key-id": "rafflesit",
+      "iceberg.fs.s3.secret-access-key": "rafflesit",
+      "iceberg.fs.client.region": "us-west-1",
+      "iceberg.fs.s3.connection.ssl.enabled": "false"
+    }
+  }

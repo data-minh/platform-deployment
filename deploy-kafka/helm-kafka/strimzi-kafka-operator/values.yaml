@@ -46,7 +46,7 @@ priorityClassName: ""
 podSecurityContext: {}
 securityContext: {}
 rbac:
-  create: yes
+  create: no
 serviceAccountCreate: yes
 serviceAccount: strimzi-cluster-operator
 

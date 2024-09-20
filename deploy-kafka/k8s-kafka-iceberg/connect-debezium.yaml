@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: connect-debezium
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: connect-debezium
-        image: minh333/kafka-connect:1.1.1
+        image: minh333/kafka-connect:1.1.2
         ports:
         - containerPort: 8083
         env:
@@ -37,10 +37,10 @@ spec:
         #   value: "org.apache.kafka.connect.json.JsonConverter"
         # - name: VALUE_CONVERTER
         #   value: "org.apache.kafka.connect.json.JsonConverter"
-        # - name: KEY_CONVERTER
-        #   value: "io.confluent.connect.avro.AvroConverter"
-        # - name: VALUE_CONVERTER
-        #   value: "io.confluent.connect.avro.AvroConverter"
+        - name: KEY_CONVERTER
+          value: "io.confluent.connect.avro.AvroConverter"
+        - name: VALUE_CONVERTER
+          value: "io.confluent.connect.avro.AvroConverter"
         - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
           value: "http://schema-registry:8081"
         - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
@@ -64,7 +64,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: connect-debezium
-  namespace: nm-kafka-cdc
+  namespace: nm-kafka
 spec:
   ports:
     - port: 8084
