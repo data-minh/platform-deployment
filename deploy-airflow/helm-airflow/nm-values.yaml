@@ -1,0 +1,3 @@
+extraEnv: |
+  - name: AIRFLOW__WEBSERVER__EXPOSE_CONFIG
+    value: 'True'
