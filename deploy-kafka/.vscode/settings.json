@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/v1%40service": "file:///c%3A/Minh/platform-deployment/deploy-kafka/k8s-kafka-iceberg/connect-debezium.yaml"
+    }
+}
