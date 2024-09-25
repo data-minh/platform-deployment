@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nessie
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nessie-pv
+spec:
+  hostPath:
+    path: '/data/nessie'
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nessie-pvc
+  namespace: nessie
+spec:
+  resources:
+    requests:
+      storage: 5Gi 
+  accessModes:
+    - ReadWriteOnce
+  volumeName: nessie-pv
+  storageClassName: standard
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nessie
+  namespace: nessie
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nessie
+  template:
+    metadata:
+      labels:
+        app: nessie
+    spec:
+      containers:
+        - name: nessie
+          image: projectnessie/nessie
+          ports:
+            - containerPort: 19120
+          volumeMounts:
+            - name: nessie-data
+              mountPath: /data
+      volumes:
+        - name: nessie-data
+          persistentVolumeClaim:
+            claimName: nessie-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nessie-service
+  namespace: nessie
+spec:
+  selector:
+    app: nessie
+  ports:
+    - port: 19120
+      name: console
+  type: NodePort
+
